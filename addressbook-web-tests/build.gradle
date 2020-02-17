@@ -1,0 +1,98 @@
+apply plugin: 'java'
+
+// Из какого репозитория загружать зависимости
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  agent
+}
+
+// Зависимости
+dependencies {
+  //testCompile group: 'org.testng', name: 'testng', version: '6.10'
+  compile 'org.testng:testng:6.10'
+
+  // compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
+  compile 'org.seleniumhq.selenium:selenium-java:3.14.0'
+
+  // testCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
+  compile 'org.hamcrest:java-hamcrest:2.0.0.0'
+
+  // compile group: 'com.beust', name: 'jcommander', version: '1.48'
+  compile 'com.beust:jcommander:1.48'
+
+  // compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.9'
+  compile 'com.thoughtworks.xstream:xstream:1.4.9'
+
+  // compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+  compile 'com.google.code.gson:gson:2.8.5'
+
+  // testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+  // compile 'ch.qos.logback:logback-classic:1.2.3'
+
+  // compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+  compile 'mysql:mysql-connector-java:8.0.13'
+
+  // compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.1.Final'
+  compile 'org.hibernate:hibernate-core:5.4.1.Final'
+
+  agent "org.aspectj:aspectjweaver:1.8.0"
+  compile "ru.yandex.qatools.allure:allure-testng-adaptor:1.4.0.RC4"
+
+  // compile group: 'org.robotframework', name: 'robotframework', version: '3.1.1'
+  compile 'org.robotframework:robotframework:3.1.1'
+
+  compile 'io.cucumber:cucumber-java:2.3.1'
+  compile 'io.cucumber:cucumber-testng:2.3.1'
+}
+
+/*
+test {
+  useTestNG {
+    suites 'src/test/resources/testng.xml'
+  }
+}
+*/
+
+task testGroups(type: Test) {
+  useTestNG {
+    suites 'src/test/resources/testng_groups.xml'
+  }
+  if (project.hasProperty('browser')) {
+    systemProperty 'browser', "${browser}"
+  }
+  if (project.hasProperty('target')) {
+    systemProperty 'target', "${target}"
+  }
+  if (project.hasProperty('platform')) {
+    systemProperty 'platform', "${platform}"
+  }
+}
+
+testGroups.doFirst {
+  jvmArgs "-javaagent:${configurations.agent.singleFile}"
+}
+
+task testContacts(type: Test) {
+  useTestNG {
+    suites 'src/test/resources/testng_contacts.xml'
+  }
+  if (project.hasProperty('browser')) {
+    systemProperty 'browser', "${browser}"
+  }
+  if (project.hasProperty('target')) {
+    systemProperty 'target', "${target}"
+  }
+  if (project.hasProperty('platform')) {
+    systemProperty 'platform', "${platform}"
+  }
+}
+
+task rf(type: JavaExec) {
+  main = 'org.robotframework.RobotFramework'
+  classpath = sourceSets.test.runtimeClasspath
+  args '--outputdir', 'build/rf-report'
+  args 'src/test/resources/rf'
+}

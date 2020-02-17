@@ -1,0 +1,26 @@
+[
+  {
+    "firstname": "Firstname0",
+    "lastname": "Lastname0",
+    "mobilePhone": "+7 (913) 777-99-33",
+    "email": "email0@test.ru",
+    "group": "test1",
+    "photo": "src/test/resources/stru.png"
+  },
+  {
+    "firstname": "Firstname1",
+    "lastname": "Lastname1",
+    "mobilePhone": "+7 (913) 777-99-33",
+    "email": "email1@test.ru",
+    "group": "test1",
+    "photo": "src/test/resources/stru.png"
+  },
+  {
+    "firstname": "Firstname2",
+    "lastname": "Lastname2",
+    "mobilePhone": "+7 (913) 777-99-33",
+    "email": "email2@test.ru",
+    "group": "test1",
+    "photo": "src/test/resources/stru.png"
+  }
+]
